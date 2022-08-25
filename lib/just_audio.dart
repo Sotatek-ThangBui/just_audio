@@ -915,7 +915,7 @@ class AudioPlayer {
     _playbackEventSubject.add(_playbackEvent);
     final playCompleter = Completer<dynamic>();
     final audioSession = await AudioSession.instance;
-    audioSession.configure(const AudioSessionConfiguration(
+    await audioSession.configure(const AudioSessionConfiguration(
       avAudioSessionCategory: AVAudioSessionCategory.playback,
       avAudioSessionMode: AVAudioSessionMode.defaultMode,
     ));
