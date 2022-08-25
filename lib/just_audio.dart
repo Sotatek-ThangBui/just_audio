@@ -917,9 +917,7 @@ class AudioPlayer {
     final audioSession = await AudioSession.instance;
     audioSession.configure(const AudioSessionConfiguration(
       avAudioSessionCategory: AVAudioSessionCategory.playback,
-      avAudioSessionRouteSharingPolicy: AVAudioSessionRouteSharingPolicy.defaultPolicy,
-      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
-      androidWillPauseWhenDucked: true,
+      avAudioSessionMode: AVAudioSessionMode.defaultMode,
     ));
     if (!_handleAudioSessionActivation || await audioSession.setActive(true)) {
       if (!playing) return;
