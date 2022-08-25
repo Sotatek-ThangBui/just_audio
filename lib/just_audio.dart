@@ -127,6 +127,7 @@ class AudioPlayer {
   final _positionDiscontinuitySubject =
       PublishSubject<PositionDiscontinuity>(sync: true);
   var _seeking = false;
+
   // ignore: close_sinks
   BehaviorSubject<Duration>? _positionSubject;
   bool _automaticallyWaitsToMinimizeStalling = true;
@@ -189,15 +190,21 @@ class AudioPlayer {
     _processingStateSubject.addStream(playbackEventStream
         .map((event) => event.processingState)
         .distinct()
-        .handleError((Object err, StackTrace stackTrace) {/* noop */}));
+        .handleError((Object err, StackTrace stackTrace) {
+      /* noop */
+    }));
     _bufferedPositionSubject.addStream(playbackEventStream
         .map((event) => event.bufferedPosition)
         .distinct()
-        .handleError((Object err, StackTrace stackTrace) {/* noop */}));
+        .handleError((Object err, StackTrace stackTrace) {
+      /* noop */
+    }));
     _icyMetadataSubject.addStream(playbackEventStream
         .map((event) => event.icyMetadata)
         .distinct()
-        .handleError((Object err, StackTrace stackTrace) {/* noop */}));
+        .handleError((Object err, StackTrace stackTrace) {
+      /* noop */
+    }));
     playbackEventStream.pairwise().listen((pair) {
       final prev = pair.first;
       final curr = pair.last;
@@ -229,11 +236,15 @@ class AudioPlayer {
     _currentIndexSubject.addStream(playbackEventStream
         .map((event) => event.currentIndex)
         .distinct()
-        .handleError((Object err, StackTrace stackTrace) {/* noop */}));
+        .handleError((Object err, StackTrace stackTrace) {
+      /* noop */
+    }));
     _androidAudioSessionIdSubject.addStream(playbackEventStream
         .map((event) => event.androidAudioSessionId)
         .distinct()
-        .handleError((Object err, StackTrace stackTrace) {/* noop */}));
+        .handleError((Object err, StackTrace stackTrace) {
+      /* noop */
+    }));
     _sequenceStateSubject.addStream(Rx.combineLatest5<List<IndexedAudioSource>?,
         List<int>?, int?, bool, LoopMode, SequenceState?>(
       sequenceStream,
@@ -254,14 +265,18 @@ class AudioPlayer {
           loopMode,
         );
       },
-    ).distinct().handleError((Object err, StackTrace stackTrace) {/* noop */}));
+    ).distinct().handleError((Object err, StackTrace stackTrace) {
+      /* noop */
+    }));
     _playerStateSubject.addStream(
         Rx.combineLatest2<bool, PlaybackEvent, PlayerState>(
                 playingStream,
                 playbackEventStream,
                 (playing, event) => PlayerState(playing, event.processingState))
             .distinct()
-            .handleError((Object err, StackTrace stackTrace) {/* noop */}));
+            .handleError((Object err, StackTrace stackTrace) {
+      /* noop */
+    }));
     _shuffleModeEnabledSubject.add(false);
     _loopModeSubject.add(LoopMode.off);
     _setPlatformActive(false, force: true)
@@ -901,17 +916,9 @@ class AudioPlayer {
     final playCompleter = Completer<dynamic>();
     final audioSession = await AudioSession.instance;
     audioSession.configure(const AudioSessionConfiguration(
-        avAudioSessionCategory: AVAudioSessionCategory.playback,
-        avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.allowBluetooth,
-        avAudioSessionMode: AVAudioSessionMode.spokenAudio,
-        avAudioSessionRouteSharingPolicy: AVAudioSessionRouteSharingPolicy.defaultPolicy,
-        avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
-        androidAudioAttributes: AndroidAudioAttributes(
-        contentType: AndroidAudioContentType.speech,
-        flags: AndroidAudioFlags.none,
-        usage: AndroidAudioUsage.voiceCommunication,
-    ),
-      androidAudioFocusGainType: AndroidAudioFocusGainType.gain,
+      avAudioSessionCategory: AVAudioSessionCategory.playback,
+      avAudioSessionRouteSharingPolicy: AVAudioSessionRouteSharingPolicy.defaultPolicy,
+      avAudioSessionSetActiveOptions: AVAudioSessionSetActiveOptions.none,
       androidWillPauseWhenDucked: true,
     ));
     if (!_handleAudioSessionActivation || await audioSession.setActive(true)) {
@@ -2625,6 +2632,7 @@ Uri _encodeDataUrl(String base64Data, String mimeType) =>
 @experimental
 abstract class StreamAudioSource extends IndexedAudioSource {
   Uri? _uri;
+
   StreamAudioSource({dynamic tag}) : super(tag: tag);
 
   @override
@@ -3027,6 +3035,7 @@ class _InProgressCacheResponse {
   // ignore: close_sinks
   final controller = ReplaySubject<List<int>>();
   final int? end;
+
   _InProgressCacheResponse({
     required this.end,
   });
@@ -3754,7 +3763,9 @@ class AndroidEqualizer extends AudioEffect with AndroidAudioEffect {
 }
 
 bool _isAndroid() => !kIsWeb && Platform.isAndroid;
+
 bool _isDarwin() => !kIsWeb && (Platform.isIOS || Platform.isMacOS);
+
 bool _isUnitTest() => !kIsWeb && Platform.environment['FLUTTER_TEST'] == 'true';
 
 /// Backwards compatible extensions on rxdart's ValueStream
