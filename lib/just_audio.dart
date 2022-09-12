@@ -917,6 +917,7 @@ class AudioPlayer {
     final audioSession = await AudioSession.instance;
     await audioSession.configure(const AudioSessionConfiguration(
       avAudioSessionCategory: AVAudioSessionCategory.playback,
+      avAudioSessionCategoryOptions: AVAudioSessionCategoryOptions.duckOthers,
       avAudioSessionMode: AVAudioSessionMode.defaultMode,
     ));
     if (!_handleAudioSessionActivation || await audioSession.setActive(true)) {
